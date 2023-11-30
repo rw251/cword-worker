@@ -2,8 +2,19 @@ name = "cword-worker"
 main = "src/index.js"
 compatibility_date = "2023-11-21"
 
+# Disable the .dev html route as not needed for cron jobs
+workers_dev = false
+
+# Allow node modules
+node_compat = true
+
+kv_namespaces = [
+  { binding = "CWORD_KV", id = "9a4c8523a7944d779282e52e7d2f6677" }
+]
+
 # Cron Triggers
 # Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
 # Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
 [triggers]
-crons = ["* * * * *"] # * * * * * = run every minute
+# Every hour
+crons = ["1 * * * *"]
