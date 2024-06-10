@@ -37,16 +37,19 @@ async function getBits(env) {
 
 const recursiveGet = (type = 'cryptic', page = 1) => {
 	let isNew = false;
+	const regex = new RegExp(`href="\/crosswords\/${type}\/([0-9]+)`);
 	return fetch(`https://www.theguardian.com/crosswords/series/${type}?page=${page}`)
 		.then((x) => x.text())
 		.then((html) => {
-			html.match(/class="fc-item [\s\S]+?datetime="[^"]+"/g).map((x) => {
-				const crosswordId = +x.match(/data-id="[^"]+\/([0-9]+)"/)[1];
-				const date = x.match(/datetime="([^"]{10})/)[1];
+			//'a[href^="/crosswords/cryptic/"]')
+			html.match(regex).map((x) => {
+				//html.match(/class="fc-item [\s\S]+?datetime="[^"]+"/g).map((x) => {
+				const crosswordId = +x.match(/\/([0-9]+)/)[1];
+				// const date = x.match(/datetime="([^"]{10})/)[1];
 				if (!crosswordObject[type][crosswordId] && crosswordId > 3000) {
 					isNew = true;
 					crosswordObject[type][crosswordId] = true;
-					crosswordList[type].push({ id: crosswordId, date });
+					crosswordList[type].push({ id: crosswordId });
 				}
 			});
 		})
