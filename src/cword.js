@@ -58,6 +58,7 @@ async function getBits(env) {
 const recursiveGet = (type = 'cryptic', page = 1) => {
 	let isNew = false;
 	const regex = new RegExp(`href="\/crosswords\/${type}\/([0-9]+)`, 'g');
+	console.log(`Getting page ${page} of ${type} crosswords...`);
 	return fetch(`https://www.theguardian.com/crosswords/series/${type}?page=${page}`, options)
 		.then((x) => {
 			return x.text();
@@ -69,6 +70,7 @@ const recursiveGet = (type = 'cryptic', page = 1) => {
 				const crosswordId = +x.match(/\/([0-9]+)/)[1];
 				// const date = x.match(/datetime="([^"]{10})/)[1];
 				if (!crosswordObject[type][crosswordId] && crosswordId > 3000) {
+					console.log(`${crosswordId} of type ${type} not in our list`);
 					isNew = true;
 					crosswordObject[type][crosswordId] = true;
 					crosswordList[type].push({ id: crosswordId });
