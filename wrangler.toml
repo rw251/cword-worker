@@ -18,4 +18,4 @@ kv_namespaces = [
 [triggers]
 # Every 2 hours
 #crons = ["22 0/2 * * *"]
-crons = ["16 * * * *"]
+crons = ["24 * * * *"]

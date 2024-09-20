@@ -78,7 +78,6 @@ const recursiveGet = (type = 'cryptic', page = 1) => {
 		.catch(() => ({}))
 		.then(() => {
 			if (isNew && page < 5) {
-				console.log(page);
 				return recursiveGet(type, page + 1);
 			}
 			crosswordList[type].sort((a, b) => b.id - a.id);
@@ -155,6 +154,7 @@ async function update(env) {
 	}
 
 	await env.CWORD_KV.put('limits.json', JSON.stringify(limits, null, 2));
+	console.log('Done');
 }
 
 // /////////////////////// Update list.json with the latest quick, prize and cryptic numbers
