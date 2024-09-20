@@ -16,5 +16,5 @@ kv_namespaces = [
 # Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
 # Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
 [triggers]
-# Every hour
-crons = ["22 * * * *"]
+# Every 2 hours
+crons = ["22 0/2 * * *"]
