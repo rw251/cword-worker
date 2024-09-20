@@ -57,7 +57,7 @@ async function getBits(env) {
 
 const recursiveGet = (type = 'cryptic', page = 1) => {
 	let isNew = false;
-	const regex = new RegExp(`href="\/crosswords\/${type}\/([0-9]+)`);
+	const regex = new RegExp(`href="\/crosswords\/${type}\/([0-9]+)`, 'g');
 	return fetch(`https://www.theguardian.com/crosswords/series/${type}?page=${page}`, options)
 		.then((x) => {
 			return x.text();
