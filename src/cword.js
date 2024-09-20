@@ -12,20 +12,23 @@ let limits;
 // 	return promise.finally(() => clearTimeout(timeout));
 // };
 
+//
+const options = {
+	headers: {
+		// Host: 'www.theguardian.com',
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0',
+		// DNT: 1,
+		'Sec-GPC': 1,
+		// Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8',
+		'Accept-Language': 'en-GB,en;q=0.5',
+		// 'Accept-Encoding': 'gzip, deflate, br, zstd',
+		Connection: 'keep-alive',
+	},
+};
+
 const getCrosswordPromise = (type, id) => {
 	console.log(`Fetching ${type} ${id}`);
-	const options = {
-		headers: {
-			// Host: 'www.theguardian.com',
-			'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0',
-			// DNT: 1,
-			'Sec-GPC': 1,
-			// Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8',
-			'Accept-Language': 'en-GB,en;q=0.5',
-			// 'Accept-Encoding': 'gzip, deflate, br, zstd',
-			Connection: 'keep-alive',
-		},
-	};
+
 	return fetch(`https://www.theguardian.com/crosswords/${type}/${id}`, options)
 		.then((x) => {
 			return x.text();
@@ -55,8 +58,10 @@ async function getBits(env) {
 const recursiveGet = (type = 'cryptic', page = 1) => {
 	let isNew = false;
 	const regex = new RegExp(`href="\/crosswords\/${type}\/([0-9]+)`);
-	return fetch(`https://www.theguardian.com/crosswords/series/${type}?page=${page}`)
-		.then((x) => x.text())
+	return fetch(`https://www.theguardian.com/crosswords/series/${type}?page=${page}`, options)
+		.then((x) => {
+			return x.text();
+		})
 		.then((html) => {
 			//'a[href^="/crosswords/cryptic/"]')
 			html.match(regex).map((x) => {
