@@ -7,12 +7,12 @@ export default {
 		await update(env);
 	},
 
-	//async fetch(request, env) {
-	// await update(env);
-	// return new Response('{}', {
-	// 	headers: {
-	// 		'content-type': 'application/json;charset=UTF-8',
-	// 	},
-	// });
-	//},
+	async fetch(request, env) {
+		await update(env);
+		return new Response('{}', {
+			headers: {
+				'content-type': 'application/json;charset=UTF-8',
+			},
+		});
+	},
 };
