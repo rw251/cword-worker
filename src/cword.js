@@ -37,7 +37,12 @@ const getCrosswordPromise = (type, id) => {
 			console.log(`Got ${type} ${id}`);
 			return html;
 		})
-		.then((html) => JSON.parse(decode(html.match(/data-crossword-data="([^"]+)"/)[1])))
+		.then((html) => {
+			const escapedContentMatch = html.match(/CrosswordComponent.*?props="([^"]+)"/);
+			const escapedContent = escapedContentMatch[1];
+			const content = decode(escapedContent);
+			return JSON.parse(content);
+		})
 		.catch((e) => {
 			console.log(`Error fetching ${type}, ${id}`);
 			console.log(e);
@@ -113,14 +118,14 @@ async function update(env) {
 	await updateListDotJson(env);
 	const crosswords = await getNLatestCrosswords('cryptic', 1);
 	for (let c of crosswords) {
-		if (c.number) {
-			await env.CWORD_KV.put(`cryptic-${c.number}.json`, JSON.stringify(c));
+		if (c.data && c.data.number) {
+			await env.CWORD_KV.put(`cryptic-${c.data.number}.json`, JSON.stringify(c.data));
 			if (!limits.cryptic.first) {
-				limits.cryptic.first = c.number;
-				limits.cryptic.last = c.number;
+				limits.cryptic.first = c.data.number;
+				limits.cryptic.last = c.data.number;
 			} else {
-				if (c.number > limits.cryptic.last) limits.cryptic.last = c.number;
-				if (c.number < limits.cryptic.first) limits.cryptic.first = c.number;
+				if (c.data.number > limits.cryptic.last) limits.cryptic.last = c.data.number;
+				if (c.data.number < limits.cryptic.first) limits.cryptic.first = c.data.number;
 			}
 		}
 	}
@@ -128,14 +133,14 @@ async function update(env) {
 	const prizeCrosswords = await getNLatestCrosswords('prize', 1);
 
 	for (let c of prizeCrosswords) {
-		if (c.number) {
-			await env.CWORD_KV.put(`prize-${c.number}.json`, JSON.stringify(c));
+		if (c.data && c.data.number) {
+			await env.CWORD_KV.put(`prize-${c.data.number}.json`, JSON.stringify(c.data));
 			if (!limits.prize.first) {
-				limits.prize.first = c.number;
-				limits.prize.last = c.number;
+				limits.prize.first = c.data.number;
+				limits.prize.last = c.data.number;
 			} else {
-				if (c.number > limits.prize.last) limits.prize.last = c.number;
-				if (c.number < limits.prize.first) limits.prize.first = c.number;
+				if (c.data.number > limits.prize.last) limits.prize.last = c.data.number;
+				if (c.data.number < limits.prize.first) limits.prize.first = c.data.number;
 			}
 		}
 	}
@@ -143,14 +148,14 @@ async function update(env) {
 	const quickCrosswords = await getNLatestCrosswords('quick', 1);
 
 	for (let c of quickCrosswords) {
-		if (c.number) {
-			await env.CWORD_KV.put(`quick-${c.number}.json`, JSON.stringify(c));
+		if (c.data && c.data.number) {
+			await env.CWORD_KV.put(`quick-${c.data.number}.json`, JSON.stringify(c.data));
 			if (!limits.quick.first) {
-				limits.quick.first = c.number;
-				limits.quick.last = c.number;
+				limits.quick.first = c.data.number;
+				limits.quick.last = c.data.number;
 			} else {
-				if (c.number > limits.quick.last) limits.quick.last = c.number;
-				if (c.number < limits.quick.first) limits.quick.first = c.number;
+				if (c.data.number > limits.quick.last) limits.quick.last = c.data.number;
+				if (c.data.number < limits.quick.first) limits.quick.first = c.data.number;
 			}
 		}
 	}

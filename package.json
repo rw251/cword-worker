@@ -4,12 +4,9 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
-		"start": "wrangler dev"
-	},
-	"devDependencies": {
-		"wrangler": "^3.0.0"
+		"deploy": "npx wrangler deploy",
+		"dev": "npx wrangler dev",
+		"start": "npx wrangler dev"
 	},
 	"dependencies": {
 		"html-entities": "^2.4.0"

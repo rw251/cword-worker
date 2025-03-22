@@ -1,12 +1,12 @@
 name = "cword-worker"
 main = "src/index.js"
-compatibility_date = "2023-11-21"
+compatibility_date = "2024-09-23"
 
 # Disable the .dev html route as not needed for cron jobs
 workers_dev = false
 
 # Allow node modules
-node_compat = true
+compatibility_flags = [ "nodejs_compat" ]
 
 kv_namespaces = [
   { binding = "CWORD_KV", id = "9a4c8523a7944d779282e52e7d2f6677" }
