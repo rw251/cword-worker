@@ -119,6 +119,12 @@ async function update(env) {
 	const crosswords = await getNLatestCrosswords('cryptic', 1);
 	for (let c of crosswords) {
 		if (c.data && c.data.number) {
+			if (c.data.date) {
+				const entry = crosswordList['cryptic'].filter((x) => x.id === c.data.number);
+				if (entry && entry.length > 0) {
+					entry[0].date = new Date(c.data.date + 7200000).toISOString().substring(0, 10);
+				}
+			}
 			await env.CWORD_KV.put(`cryptic-${c.data.number}.json`, JSON.stringify(c.data));
 			if (!limits.cryptic.first) {
 				limits.cryptic.first = c.data.number;
@@ -134,6 +140,12 @@ async function update(env) {
 
 	for (let c of prizeCrosswords) {
 		if (c.data && c.data.number) {
+			if (c.data.date) {
+				const entry = crosswordList['prize'].filter((x) => x.id === c.data.number);
+				if (entry && entry.length > 0) {
+					entry[0].date = new Date(c.data.date + 7200000).toISOString().substring(0, 10);
+				}
+			}
 			await env.CWORD_KV.put(`prize-${c.data.number}.json`, JSON.stringify(c.data));
 			if (!limits.prize.first) {
 				limits.prize.first = c.data.number;
@@ -149,6 +161,12 @@ async function update(env) {
 
 	for (let c of quickCrosswords) {
 		if (c.data && c.data.number) {
+			if (c.data.date) {
+				const entry = crosswordList['quick'].filter((x) => x.id === c.data.number);
+				if (entry && entry.length > 0) {
+					entry[0].date = new Date(c.data.date + 7200000).toISOString().substring(0, 10);
+				}
+			}
 			await env.CWORD_KV.put(`quick-${c.data.number}.json`, JSON.stringify(c.data));
 			if (!limits.quick.first) {
 				limits.quick.first = c.data.number;
@@ -161,6 +179,9 @@ async function update(env) {
 	}
 
 	await env.CWORD_KV.put('limits.json', JSON.stringify(limits, null, 2));
+
+	// we've added dates so need to save this again
+	await env.CWORD_KV.put('list.json', JSON.stringify(crosswordList));
 	console.log('Done');
 }
 
